@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+
 const Schema = mongoose.Schema;
 
 const userRef = {
@@ -27,7 +27,7 @@ const chatSchema = new Schema({
   name: {
     type: Schema.Types.String,
     required: true,
-    match: /^\w{6,16}$/,
+    match: /[ 0-9A-Za-zа-яА-Я]{6,16}$/,
   },
   owner: {
     ...userRef,
@@ -37,8 +37,14 @@ const chatSchema = new Schema({
     userRef,
   ],
   messages: [messageSchema],
-  createdAt: Schema.Types.Date,
-  updatedAt: Schema.Types.Date,
+  createdAt: {
+    type: Schema.Types.Date,
+    default: new Date()
+  },
+  updatedAt: {
+    type: Schema.Types.Date,
+    default: new Date()
+  },
 }, {
   timestamp: true,
 });
