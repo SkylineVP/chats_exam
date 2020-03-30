@@ -3,8 +3,11 @@ const {Chat} = require('./../models');
 
 module.exports.createChat = async ( req, res, next ) => {
 	try {
-
-		const chat = await Chat.create(req.body);
+		console.log(req.headers.authorization);
+		const chat = await Chat.create({
+			...req.body,
+			owner: req.headers.authorization
+		});
 		if (chat) {
 			req.chat = chat;
 			return next();

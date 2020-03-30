@@ -10,7 +10,8 @@ function mapStateToProps( state ) {
 	return {
 		chats: state.chats,
 		isFetching: state.isFetching,
-		user:state.auth.user
+		user: state.auth.user,
+		currentChat: state.chats.currentChat
 	};
 }
 
@@ -28,11 +29,16 @@ class ChatList extends Component {
 		this.props.getChats();
 	}
 
-	render( ) {
+	onChatItemClickHandler = ( event ) => {
+		console.log(event.currentTarget);
+		this.props.selectChat(event.currentTarget.id)
+	};
+
+	render() {
 		const chatsList = [];
-		const {chats:{chats},user,children,createChat,isFething}=this.props;
+		const {chats: {chats}, user, children, createChat, isFething} = this.props;
 		for (const chatId in chats) {
-			chatsList.push(<li key={chatId} id={chatId}>{chats[chatId].name}</li>)
+			chatsList.push(<li key={chatId} id={chatId} onClick={this.onChatItemClickHandler}>{chats[chatId].name}</li>)
 		}
 
 		return (<>
@@ -41,8 +47,8 @@ class ChatList extends Component {
 					isFething? 'loading':chatsList
 				}</ul>
 				<button onClick={() => {
-					const chatname=window.prompt("nameChat");
-					createChat({name:chatname,owner:user._id});
+					const chatname = window.prompt("nameChat");
+					createChat({name: chatname});
 				}}/>
 			</>
 		);

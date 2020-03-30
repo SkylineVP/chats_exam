@@ -16,10 +16,16 @@ class BadRequestError extends UserError{
   }
 }
 
-class NotFoundError extends UserError{
-  constructor (msg) {
-    super(msg || 'Resource not found', 404);
-  }
+class NotFoundError extends UserError {
+	constructor( msg ) {
+		super(msg || 'Resource not found', 404);
+	}
+}
+
+class Unauthorized extends UserError {
+	constructor() {
+		super("You need authorized", 401);
+	}
 }
 
 module.exports = {

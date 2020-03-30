@@ -12,16 +12,20 @@ const userSchema = new Schema({
     match: /^\w{6,16}$/,
   },
   password: {
-    type: Schema.Types.String,
-    required: true,
-    /*
-     select: false,
-     */
+	  type: Schema.Types.String,
+	  required: true,
+	  /*
+	   select: false,
+	   */
   },
-  profilePicture: {
-    type: Schema.Types.String,
-    get: value => `${ PROFILE_PICTURE_PATH }/${ value }`,
-  },
+	profilePicture: {
+		type: Schema.Types.String,
+		get: value => `${PROFILE_PICTURE_PATH}/${value}`,
+	},
+	chats: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Chat',
+	}]
 });
 
 userSchema.pre('save', function hashPassword (next) {
