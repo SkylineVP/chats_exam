@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
-import { connect }          from 'react-redux';
-import {
-	createSelectChatAction,
-	createLoadChatsAction,
-	createPostChatRequestAction
-}                           from "../../actions";
+import React, { Component }                                                           from 'react';
+import { connect }                                                                    from 'react-redux';
+import { createLoadChatsAction, createPostChatRequestAction, createSelectChatAction } from "../../actions";
+import style                                                                          from './ChatList.module.scss';
 
 function mapStateToProps( state ) {
 	return {
@@ -30,8 +27,12 @@ class ChatList extends Component {
 	}
 
 	onChatItemClickHandler = ( event ) => {
-		console.log(event.currentTarget);
+
 		this.props.selectChat(event.currentTarget.id)
+	};
+	onCreateChatButtonClickHandler = () => {
+		const chatname = window.prompt("nameChat");
+		this.props.createChat({name: chatname});
 	};
 
 	render() {
@@ -41,16 +42,15 @@ class ChatList extends Component {
 			chatsList.push(<li key={chatId} id={chatId} onClick={this.onChatItemClickHandler}>{chats[chatId].name}</li>)
 		}
 
-		return (<>
+		return (<div className={style.wrapper}>
 				{children}
 				<ul>{
-					isFething? 'loading':chatsList
+					isFething ? 'loading' : chatsList
 				}</ul>
-				<button onClick={() => {
-					const chatname = window.prompt("nameChat");
-					createChat({name: chatname});
-				}}/>
-			</>
+				<div className={style.createChatButton} onClick={this.onCreateChatButtonClickHandler}>
+					Create Chat
+				</div>
+			</div>
 		);
 	}
 }

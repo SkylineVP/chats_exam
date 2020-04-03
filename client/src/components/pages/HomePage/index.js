@@ -1,17 +1,16 @@
 import React        from 'react';
 import ChatList     from "../../ChatsList";
-import MessagesList from "../../MessagesList";
+import MessagesList from "../../MessagesList"
+import style        from './HomePage.module.scss'
+import chatSocket   from "../../../api/ws/chats";
 
 const HomePage = ( props ) => {
 	return (
-		<div>
-			<h1>Home page</h1>
-			<ChatList>
-				Chatlist
-			</ChatList>
-			<MessagesList/>
+		<div style={{display: 'flex'}}>
+			<ChatList/>
+			<MessagesList className={style.messagesList}/>
 		</div>
-  );
+	);
 };
 
 export default HomePage;
