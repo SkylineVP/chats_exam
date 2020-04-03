@@ -9,8 +9,8 @@ const SignUpForm = props => {
     const formData = new FormData();
 
     Object.keys(values).forEach(key => {
-      console.log(values[ key ]);
-      formData.append(key, values[ key ]);
+
+        formData.append(key, values[ key ]);
     });
     props.signUp(formData);
   };
