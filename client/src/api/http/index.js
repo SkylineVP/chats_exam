@@ -5,7 +5,7 @@ const http = axios.create({
   baseURL: 'http://localhost:3000/api',
 });
 http.interceptors.request.use(config => {
-    debugger;
+
     const state = store.getState();
     if (state.auth.user) {
         config.headers.authorization = state.auth.user._id || '';
