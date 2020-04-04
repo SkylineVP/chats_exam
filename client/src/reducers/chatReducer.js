@@ -24,7 +24,7 @@ function chatsReducer( state = initialState, action ) {
 			};
 
 		case ACTION_TYPES.LOAD_ALL_CHATS_SUCCESS: {
-			console.log(state);
+
 			const {chats} = action;
 			const newState = _.clone(state);
 			chats.forEach(chat => {
@@ -36,16 +36,16 @@ function chatsReducer( state = initialState, action ) {
 		}
 
 		case ACTION_TYPES.LOAD_ALL_CHATS_ERROR:
-		  return {
+			return {
 				...state,
 				isFetching: false,
 				error: action.error,
 			};
 
-		case ACTION_TYPES.LOAD_CHAT_MESSAGES_SUCCESS: {
+		case ACTION_TYPES.NEW_CHAT_MESSAGES: {
 			const {chatId, messages} = action;
 			const newState = _.clone(state);
-			newState.chats[chatId].messages = messages;
+			newState.chats[chatId].messages.push(messages);
 			newState.isFetching = false;
 			return newState;
 		}
@@ -58,11 +58,11 @@ function chatsReducer( state = initialState, action ) {
 			};
 
 		case ACTION_TYPES.CREATE_CHAT_SUCCESS: {
-			console.log(action);
+
 			const {_id, ...rest} = action.chat;
 			const newState = _.clone(state);
 			newState.chats[_id] = {...rest};
-			newState.isFetching=false;
+			newState.isFetching = false;
 			return newState;
 		}
 		case ACTION_TYPES.CREATE_CHAT_ERROR:
@@ -72,6 +72,25 @@ function chatsReducer( state = initialState, action ) {
 				error: action.error,
 			};
 
+		case ACTION_TYPES.JOIN_TO_CHATS_REQUEST:
+			return {
+				...state,
+				isFetching: true
+			};
+		case ACTION_TYPES.JOIN_TO_CHATS_SUCCESS: {
+			const {chatId, authorization} = action.data;
+			const newState = _.clone(state);
+			debugger;
+			newState.chats[chatId].users.push(authorization);
+			newState.isFetching = false;
+			return newState
+		}
+		case ACTION_TYPES.JOIN_TO_CHATS_ERROR:
+			return {
+				...state,
+				isFetching: false,
+				error: action.error,
+			};
 		default:
 			return state;
 	}

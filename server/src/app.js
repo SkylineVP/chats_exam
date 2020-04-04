@@ -1,3 +1,4 @@
+const Chat = require('./models/Chat');
 const path = require('path');
 const { Server } = require('http');
 const express = require('express');
@@ -22,27 +23,49 @@ app.use('/api', router);
 /*
 * error handler
 * */
-app.use((err, req, res, next) => {
+app.use(( err, req, res, next) => {
   res.status(500).send(err);
 });
 
 /*
 * WebSocket
 * */
-const chat = io.of('/chat').on('connection', function (socket) {
-  chat.on('message', msg => {
+const chat = io.of('/chat');
+
+chat.on('connection', function ( socket ) {
+  socket.on('join to chats', ( user ) => {
+    user.chats.forEach(chat => {
+      socket.join(chat);
+    });
+  });
+  socket.on('message', async ( chatId, message ) => {
+    const chatModel = await Chat.findOne({_id: chatId});
+    if (chatModel) {
+      chatModel.messages.push(message);
+      chatModel.save();
+      io.of('/chat').to(chatId).emit('new-message', chatId, message);
+    }
+
 
   });
-  chat.on('disconnect', reason => {
+  socket.on('newChat', function () {
+    io.of('/chat').emit('updateChats');
 
   });
+  socket.on('join to chat', ( chatId ) => socket.join(chatId))
+
+
 });
+
+
 /*
 * start server
 * */
 server.listen(PORT, () =>
-  console.log(`Example app listening on port ${ PORT }!`),
+    console.log(`Example app listening on port ${PORT}!`),
 );
+
+module.exports.socket = io;
 
 
 

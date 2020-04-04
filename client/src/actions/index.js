@@ -51,8 +51,26 @@ export const createLoadChatsErrorAction = ( error ) => ({
 });
 
 
-export const createLoadChatMessagesSuccessAction = ( chatId, messages ) => ({
-	type: ACTION_TYPES.LOAD_CHAT_MESSAGES_SUCCESS,
+export const createNewChatMessagesAction = ( chatId, messages ) => ({
+	type: ACTION_TYPES.NEW_CHAT_MESSAGES,
 	chatId,
 	messages,
 });
+export const createJoinToChatsRequestAction = ( chatId ) => ({
+	type: ACTION_TYPES.JOIN_TO_CHATS_REQUEST,
+	chatId
+});
+export const createJoinToChatsSuccessAction = ( data ) => ({
+	type: ACTION_TYPES.JOIN_TO_CHATS_SUCCESS,
+	data
+});
+export const createJoinToChatsErrorAction = ( error ) => ({
+	type: ACTION_TYPES.JOIN_TO_CHATS_ERROR,
+	error
+});
+export const createAddChatToUser = ( chatId ) => ({
+	type: ACTION_TYPES.ADD_CHAT,
+	chatId
+});
+
+

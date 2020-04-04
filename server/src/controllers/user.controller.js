@@ -19,7 +19,10 @@ module.exports.createUser = async (req, res, next) => {
 
 module.exports.getUser = async (req, res, next) => {
   try {
-
+	  const user = await User.findOne({_id: req.id})
+	  if (user) {
+		  res.send(user);
+	  }
 
   } catch (e) {
     next(e);

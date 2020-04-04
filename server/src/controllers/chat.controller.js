@@ -50,7 +50,10 @@ module.exports.joinToChat = async ( req, res, next ) => {
 			user.chats.push(chat._id);
 			chat.save();
 			user.save();
-			res.send('You joined');
+			res.send({chatId: chat._id, authorization});
+		}
+		else {
+
 		}
 	} catch (e) {
 		console.error(e)

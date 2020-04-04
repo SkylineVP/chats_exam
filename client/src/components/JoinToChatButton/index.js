@@ -1,21 +1,32 @@
-import React, { Component } from 'react';
-import { connect }          from 'react-redux';
-import { joinToChat }       from "../../api/http/ChatController";
+import React, { Component }               from 'react';
+import { connect }                        from 'react-redux';
+import { createJoinToChatsRequestAction } from "../../actions";
+import { joinToChat }                     from "../../api/ws/chats";
 
 function mapStateToProps( state ) {
 	return {
-		chats: state.chats,
+		...state.chats,
 		user: state.auth.user
+	};
+}
+
+function mapDispatchToProps( dispatch ) {
+	return {
+
+		joinToChats: ( chatId ) => dispatch(createJoinToChatsRequestAction(chatId)),
+
 	};
 }
 
 class JoinRToChatButton extends Component {
 	joinToChatClickHandler = () => {
+		debugger;
+		this.props.joinToChats(this.props.currentChat);
 		joinToChat(this.props.currentChat);
 	};
 
 	render() {
-		const {user, chats: {chats, currentChat}} = this.props;
+		const {user, chats, currentChat} = this.props;
 		if (user && chats && currentChat && !chats[currentChat].users.includes(user.id)) {
 			return (
 				<div onClick={this.joinToChatClickHandler}>
@@ -31,4 +42,5 @@ class JoinRToChatButton extends Component {
 
 export default connect(
 	mapStateToProps,
+	mapDispatchToProps
 )(JoinRToChatButton);

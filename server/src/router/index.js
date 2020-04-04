@@ -6,6 +6,7 @@ const comparePassword = require('./../middleware/comparePassword.js');
 const findUserById = require('./../middleware/findUserById.js');
 const chatController = require("../controllers/chat.controller");
 const authenticationRoute = require('./authRoute');
+const {socket} = require('../app.js');
 
 router.post('/sign_up',
 	saveProfilePicture,
@@ -25,7 +26,9 @@ router.use(authenticationRoute);
 
 router.post('/chat',
 	chatController.createChat,
-	( req, res ) => res.send(req.chat));
+	( req, res ) => {
+		res.send(req.chat);
+	});
 router.put('/chat',
 	chatController.getChat,
 	findUserById,

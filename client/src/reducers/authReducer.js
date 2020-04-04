@@ -1,4 +1,5 @@
 import ACTION_TYPES from '../actions/actionTypes.js';
+import _            from "lodash";
 
 const initialState = {
   user: null,
@@ -26,6 +27,14 @@ function authReducer (state = initialState, action) {
         isFetching: false,
         error: action.error,
       };
+    case ACTION_TYPES.ADD_CHAT: {
+      debugger;
+      const {chatId} = action;
+      const newState = _.clone(state);
+      newState.auth.user.chats.push(chatId);
+      return newState;
+    }
+
     default:
       return state;
   }

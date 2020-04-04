@@ -2,6 +2,8 @@ import React, { Component }                                                     
 import { connect }                                                                    from 'react-redux';
 import { createLoadChatsAction, createPostChatRequestAction, createSelectChatAction } from "../../actions";
 import style                                                                          from './ChatList.module.scss';
+import { chatSocket }                                                                 from "../../api/ws/index";
+import { newChat }                                                                    from "../../api/ws/chats";
 
 function mapStateToProps( state ) {
 	return {
@@ -24,15 +26,19 @@ function mapDispatchToProps( dispatch ) {
 class ChatList extends Component {
 	componentDidMount() {
 		this.props.getChats();
+		chatSocket.on('updateChats', () => {
+			this.props.getChats();
+		})
+
 	}
 
 	onChatItemClickHandler = ( event ) => {
-
 		this.props.selectChat(event.currentTarget.id)
 	};
 	onCreateChatButtonClickHandler = () => {
 		const chatname = window.prompt("nameChat");
 		this.props.createChat({name: chatname});
+		newChat();
 	};
 
 	render() {

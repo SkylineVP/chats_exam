@@ -1,12 +1,14 @@
-import React                        from 'react';
-import { connect }                  from 'react-redux';
-import { createLoginRequestAction } from '../../../actions';
-import { Field, Formik, Form }      from 'formik';
+import React                   from 'react';
+import { connect }             from 'react-redux';
+import { sendMessage }         from '../../../api/ws/chats'
+import { Field, Formik, Form } from 'formik';
 
 let SendMessageForm = props => {
 
-	const handleSubmit = ( values ) => {
-		props.login(props.currentChat, values.message);
+	const handleSubmit = ( values, resetForm ) => {
+		debugger;
+		sendMessage(props.currentChat, {body: values.message, authorId: props.authorId});
+		values.messages = '';
 	};
 
 	return (
@@ -15,8 +17,8 @@ let SendMessageForm = props => {
 					message: '',
 				}}>
 			{
-				( {} ) => (
-					<Form>
+				( {values, isSubmiting, formProps} ) => (
+					<Form style={{marginTop: "auto"}}>
 						<Field name={'message'} type={'text'} value={values.message}/>
 						<button type={'submit'}>send Message</button>
 					</Form>
@@ -26,8 +28,11 @@ let SendMessageForm = props => {
 	);
 };
 const mapStateToProps = state => {
-	return state.chats.currentChat
+	return {
+		currentChat: state.chats.currentChat,
+		authorId: state.auth.user.id
+	}
 };
 const mapDispatchToProps = dispatch => ({});
 
-export default connect(null, mapDispatchToProps)(SendMessageForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SendMessageForm);
